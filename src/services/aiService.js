@@ -32,7 +32,7 @@ export const aiService = {
    * @returns {Promise<string>} - The generated title
    */
   async generateTitle(content) {
-    const prompt = `Generate a single one line catchy and SEO-friendly title, in simple text, for a blog post with the following content:\n\n${content.substring(0, 500)}...\n\nTitle:`
+    const prompt = `Generate a single rich text one line catchy and SEO-friendly title, in simple text, for a blog post with the following content:\n\n${content.substring(0, 500)}...\n\nTitle:`
     return await callOpenAI(prompt)
   },
 
