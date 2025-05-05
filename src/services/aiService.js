@@ -1,8 +1,8 @@
 // src/services/aiService.js
 
 // OpenAI API configuration
-const API_KEY = 'your-openai-api-key' // Replace with your actual API key
-const API_ENDPOINT = 'https://api.openai.com/v1/completions'
+const API_KEY = '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'
+const API_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions'
 
 /**
  * Helper function to make API calls to OpenAI
@@ -11,12 +11,6 @@ const API_ENDPOINT = 'https://api.openai.com/v1/completions'
  */
 async function callOpenAI(prompt) {
   try {
-    // For development/demo purposes, simulate API call with mock responses
-    if (process.env.NODE_ENV === 'development' || !API_KEY.includes('sk-')) {
-      console.log('Using mock AI response for prompt:', prompt)
-      return simulateAIResponse(prompt)
-    }
-
     // Real API call
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
@@ -25,62 +19,30 @@ async function callOpenAI(prompt) {
         Authorization: `Bearer ${API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-3.5-turbo-instruct',
-        prompt: prompt,
-        max_tokens: 150,
-        temperature: 0.7,
+        model: 'openai/gpt-3.5-turbo-0613',
+        // prompt: prompt,
+        messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
       }),
     })
+
+    console.log('API response:', response)
 
     if (!response.ok) {
       throw new Error(`API Error: ${response.status}`)
     }
 
     const data = await response.json()
-    return data.choices[0].text.trim()
+    console.log('API data:', data.choices[0].message.content)
+    return data.choices[0].message.content
   } catch (error) {
     console.error('Error calling OpenAI API:', error)
     throw error
   }
-}
-
-/**
- * Simulate AI responses for development/demo purposes
- * @param {string} prompt - The prompt sent to the API
- * @returns {string} - A simulated response
- */
-function simulateAIResponse(prompt) {
-  // Wait a random time to simulate API latency
-  return new Promise((resolve) => {
-    const delay = Math.random() * 1000 + 500 // 500-1500ms delay
-
-    setTimeout(() => {
-      if (prompt.includes('title')) {
-        // Generate mock title based on content length
-        const titleOptions = [
-          'The Ultimate Guide to Modern Web Development',
-          '10 Ways to Improve Your Coding Skills',
-          'Understanding the Future of Technology',
-          'How AI is Transforming Content Creation',
-          'Best Practices for Frontend Development',
-        ]
-        resolve(titleOptions[Math.floor(Math.random() * titleOptions.length)])
-      } else if (prompt.includes('summary')) {
-        resolve(
-          'This article explores key concepts in web development and artificial intelligence, highlighting how these technologies can be combined to create powerful applications. The author shares practical insights on implementation strategies and best practices for developers.',
-        )
-      } else if (prompt.includes('keywords')) {
-        const keywordSets = [
-          ['web development', 'vue.js', 'javascript', 'frontend', 'programming'],
-          ['ai', 'machine learning', 'content creation', 'technology', 'automation'],
-          ['blog writing', 'web apps', 'tutorial', 'coding', 'software'],
-        ]
-        resolve(keywordSets[Math.floor(Math.random() * keywordSets.length)])
-      } else {
-        resolve('Generated content based on your request.')
-      }
-    }, delay)
-  })
 }
 
 export const aiService = {
@@ -117,7 +79,7 @@ export const aiService = {
     // Process response into an array of keywords
     return response
       .split(/,|\n/)
-      .map((keyword) => keyword.trim().replace(/^\d+\.\s*/, ''))
+      .map((keyword) => keyword.replace(/^\d+\.\s*/, ''))
       .filter((keyword) => keyword.length > 0)
   },
 }

@@ -97,13 +97,7 @@
         >
           <b>Heading</b>
         </button>
-        <button
-          class="btn btn-sm btn-outline-primary"
-          @click="formatDoc('insertParagraph')"
-          title="Paragraph"
-        >
-          Paragraph
-        </button>
+
         <button
           class="btn btn-sm btn-outline-primary"
           @click="formatDoc('insertHorizontalRule')"
