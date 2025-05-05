@@ -11,11 +11,11 @@
               <span v-if="blogPost.title">{{ blogPost.title }}</span>
               <span v-else class="text-muted">Untitled Blog Post</span>
             </h5>
-            <div>
+            <div class="d-flex gap-2">
               <button class="btn btn-success me-2" @click="saveDraft">
                 <i class="bi bi-save"></i> Save Draft
               </button>
-              <button class="btn btn-primary" @click="showDrafts = !showDrafts">
+              <button class="btn btn-primary" @click="toggleDraftsModal">
                 <i class="bi bi-folder"></i> My Drafts
               </button>
             </div>
@@ -98,12 +98,13 @@
     </div>
     
     <!-- Drafts Modal -->
+    <div v-if="showDrafts" class="modal-backdrop fade show" @click="closeDraftsModal"></div>
     <div class="modal fade" :class="{ 'show d-block': showDrafts }" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-lg" role="document" @click.stop>
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">My Drafts</h5>
-            <button type="button" class="btn-close" @click="showDrafts = false"></button>
+            <button type="button" class="btn-close" @click="closeDraftsModal"></button>
           </div>
           <div class="modal-body">
             <div v-if="drafts.length === 0" class="text-center p-4 text-muted">
@@ -127,11 +128,10 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="showDrafts = false">Close</button>
+            <button type="button" class="btn btn-secondary" @click="closeDraftsModal">Close</button>
           </div>
         </div>
       </div>
-      <div class="modal-backdrop fade show" v-if="showDrafts"></div>
     </div>
     
     <!-- Toast Notifications -->
@@ -192,8 +192,36 @@ export default {
   },
   mounted() {
     this.loadDrafts();
+    
+    // Add event listener for escape key to close modal
+    document.addEventListener('keydown', this.handleKeyDown);
+  },
+  beforeUnmount() {
+    // Remove event listener when component is destroyed
+    document.removeEventListener('keydown', this.handleKeyDown);
   },
   methods: {
+    handleKeyDown(event) {
+      // Close modal when ESC key is pressed
+      if (event.key === 'Escape' && this.showDrafts) {
+        this.closeDraftsModal();
+      }
+    },
+    
+    toggleDraftsModal() {
+      this.showDrafts = !this.showDrafts;
+      if (this.showDrafts) {
+        document.body.classList.add('modal-open');
+      } else {
+        document.body.classList.remove('modal-open');
+      }
+    },
+    
+    closeDraftsModal() {
+      this.showDrafts = false;
+      document.body.classList.remove('modal-open');
+    },
+    
     async generateTitle() {
       if (!this.blogPost.content) {
         this.showToast('Error', 'Please write some content first');
@@ -287,7 +315,7 @@ export default {
       try {
         const draft = await draftService.getDraft(id);
         this.blogPost = { ...draft };
-        this.showDrafts = false;
+        this.closeDraftsModal();
         this.showToast('Success', 'Draft loaded');
       } catch (error) {
         console.error('Error loading draft:', error);
@@ -340,5 +368,10 @@ export default {
 .toast.show {
   display: block;
   opacity: 1;
+}
+
+/* Add styles for modal open state */
+body.modal-open {
+  overflow: hidden;
 }
 </style>
