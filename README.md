@@ -65,8 +65,8 @@ A Vue.js application that helps users draft blog posts with AI-powered suggestio
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/blog-ai-assistant.git
-   cd blog-ai-assistant
+   git clone https://github.com/victorgis/vue-ai-asisted-blog.git
+   cd vue-ai-asisted-blog
    ```
 
 2. Install dependencies:
@@ -76,14 +76,14 @@ A Vue.js application that helps users draft blog posts with AI-powered suggestio
 
 3. Set up your OpenAI API key:
    - Create a `.env` file in the project root
-   - Add your API key: `VUE_APP_OPENAI_API_KEY=your-api-key-here`
+   - Add your API key: `VITE_OPENAI_API_KEY= VITE_OPENAI_API_URL=`
 
 4. Start the development server:
    ```
-   npm run serve
+   npm run dev
    ```
 
-5. Open your browser and navigate to `http://localhost:8080`
+5. Open your browser and navigate to `http://localhost:5173`
 
 ## Project Structure
 

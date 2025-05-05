@@ -1,8 +1,11 @@
 // src/services/aiService.js
 
 // OpenAI API configuration
-const API_KEY = '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'
-const API_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions'
+const API_KEY = import.meta.env.VITE_OPENAI_API_KEY
+const API_ENDPOINT = import.meta.env.VITE_OPENAI_API_URL
+
+console.log('API_KEY:', API_KEY)
+console.log('API_ENDPOINT:', API_ENDPOINT)
 
 /**
  * Helper function to make API calls to OpenAI
