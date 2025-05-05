@@ -4,9 +4,6 @@
 const API_KEY = import.meta.env.VITE_OPENAI_API_KEY
 const API_ENDPOINT = import.meta.env.VITE_OPENAI_API_URL
 
-console.log('API_KEY:', API_KEY)
-console.log('API_ENDPOINT:', API_ENDPOINT)
-
 /**
  * Helper function to make API calls to OpenAI
  * @param {string} prompt - The prompt to send to the API
@@ -23,7 +20,6 @@ async function callOpenAI(prompt) {
       },
       body: JSON.stringify({
         model: 'openai/gpt-3.5-turbo-0613',
-        // prompt: prompt,
         messages: [
           {
             role: 'user',
