@@ -166,7 +166,7 @@
     </div>
   </div>
   <footer class="text-center mt-4">
-    <p>&copy; 2024 Blog AI Assistant. All rights reserved.</p>
+    <p>&copy; 2025 Blog AI Assistant. All rights reserved.</p>
     <p>Built by <a href="https://veespatial.netlify.app" target="_blank">Victor Essang</a></p>
   </footer>
 </template>
