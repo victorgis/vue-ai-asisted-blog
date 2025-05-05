@@ -1,6 +1,7 @@
 <template>
   <div class="rich-text-editor">
     <div class="toolbar border-bottom p-2 mb-2">
+      <!-- buttons section  -->
       <div class="btn-group me-2">
         <button
           class="btn btn-sm"
